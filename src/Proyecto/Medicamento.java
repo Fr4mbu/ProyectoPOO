@@ -25,6 +25,15 @@ public class Medicamento {
         }
     }
 
+    //metodos getter
+    public int getCantidadDisponible() {
+        return cantidadDisponible;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
 
 
 }
