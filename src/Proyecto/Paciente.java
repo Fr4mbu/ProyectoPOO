@@ -30,4 +30,16 @@ public class Paciente {
         listaRecordatorios.add(r);
         System.out.println("Se agrego un recordatorio para: " + r.getMedicamentoAsociado().getNombre());
     }
+
+    //tomar un medicamento, actualizacion de stock + historial
+    public void tomarMedicamento(Medicamento m) {
+        if(listaMedicamentos.contains(m)) {
+            m.tomarDosis();
+            historial.agregarRegistro("Paciente " + nombre + "tomo " + m.getNombre());
+        } else {
+            System.out.println("El medicamento " + m.getNombre() + " no esta en la lista de medicamentos");
+        }
+    }
+
+
 }
