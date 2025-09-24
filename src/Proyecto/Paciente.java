@@ -19,4 +19,9 @@ public class Paciente {
         this.historial = new Historial();
     }
 
+    //agregar medicamento
+    public void agregarMedicamento(Medicamento m) {
+        listaMedicamentos.add(m);
+        System.out.println("Se agrego el medicamento: " + m.getNombre());
+    }
 }
