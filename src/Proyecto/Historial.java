@@ -22,5 +22,8 @@ public class Historial {
         }
     }
 
-
+    //getter
+    public List<String> getRegistros() {
+        return registros;
+    }
 }
