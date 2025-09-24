@@ -1,14 +1,14 @@
 package Proyecto;
 
-import java.time.LocalDate;
+import java.time.LocalTime;
 
 public class Recordatorio {
-    private LocalDate hora; //hora de la toma
+    private LocalTime hora; //hora de la toma
     private int frecuenciaHoras; //cada cuanto repetir
     private Medicamento medicamentoAsociado;
 
     //constructor
-    public Recordatorio(LocalDate hora, int frecuenciaHoras, Medicamento medicamento) {
+    public Recordatorio(LocalTime hora, int frecuenciaHoras, Medicamento medicamento) {
         this.hora = hora;
         this.frecuenciaHoras = frecuenciaHoras;
         this.medicamentoAsociado = medicamento;
@@ -20,5 +20,16 @@ public class Recordatorio {
         System.out.println("Frecuencia: cada " + frecuenciaHoras +" horas");
     }
 
+    //getters
+    public LocalTime getHora() {
+        return hora;
+    }
 
+    public int  getFrecuenciaHoras() {
+        return frecuenciaHoras;
+    }
+
+    public Medicamento getMedicamentoAsociado() {
+        return medicamentoAsociado;
+    }
 }
