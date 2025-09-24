@@ -24,4 +24,10 @@ public class Paciente {
         listaMedicamentos.add(m);
         System.out.println("Se agrego el medicamento: " + m.getNombre());
     }
+
+    //agregar recordatorio
+    public void agregarRecordatorio(Recordatorio r) {
+        listaRecordatorios.add(r);
+        System.out.println("Se agrego un recordatorio para: " + r.getMedicamentoAsociado().getNombre());
+    }
 }
