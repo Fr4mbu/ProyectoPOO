@@ -12,5 +12,16 @@ public class Insulina extends Medicamento {
         this.dosisRecomendada = dosisRecomendada;
     }
 
+    //metodo adicional para recomendar dosis
+    public void recomendarDosis() {
+        if(nivelGlucosa > 180) {
+            System.out.println("Glucosa alta (" + nivelGlucosa + "). Se recomienda aplicar " + dosisRecomendada + " unidades de insulina");
+        } else if (nivelGlucosa < 70) {
+            System.out.println("Glucosa baja (" + nivelGlucosa + "). Precaucion, aplicar insulina");
+        } else {
+            System.out.println("Glucosa estable (" + nivelGlucosa + "). Mantener dosis actual");
+        }
+    }
+
 
 }
