@@ -10,6 +10,11 @@ public class Historial {
     public Historial() {
         this.registros = new ArrayList<>();
     }
+
+    //metodo para agregar registro
+    public void agregarRegistro(String registro) {
+        registros.add(registro);
+    }
     
     public void mostrarHistorial() {
         if(registros.isEmpty()) {
