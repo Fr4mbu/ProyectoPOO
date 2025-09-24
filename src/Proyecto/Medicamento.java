@@ -33,7 +33,4 @@ public class Medicamento {
     public String getNombre() {
         return nombre;
     }
-
-
-
 }
