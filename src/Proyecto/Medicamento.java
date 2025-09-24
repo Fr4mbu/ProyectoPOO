@@ -15,4 +15,16 @@ public class Medicamento {
         this.fechaVencimiento = fecha;
     }
 
+    //metodo para tomar dosis
+    public void tomarDosis() {
+        if (cantidadDisponible > 0) {
+            cantidadDisponible--;
+            System.out.println("Cantidad de dosis: " + cantidadDisponible);
+        } else {
+            System.out.println("No queda stock de " + nombre);
+        }
+    }
+
+
+
 }
