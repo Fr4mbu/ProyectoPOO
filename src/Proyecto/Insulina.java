@@ -23,5 +23,19 @@ public class Insulina extends Medicamento {
         }
     }
 
+    //getters y setters
+    public double getNivelGlucosa() {
+        return nivelGlucosa;
+    }
+     public void setNivelGlucosa(double nivelGlucosa) {
+        this.nivelGlucosa = nivelGlucosa;
+     }
 
+     public int getDosisRecomendada() {
+        return dosisRecomendada;
+     }
+
+     public void setDosisRecomendada(int dosisRecomendada) {
+        this.dosisRecomendada = dosisRecomendada;
+     }
 }
