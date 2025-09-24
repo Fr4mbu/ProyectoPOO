@@ -14,5 +14,11 @@ public class Recordatorio {
         this.medicamentoAsociado = medicamento;
     }
 
+    //mostrar recordatorio
+    public void mostrarRecordatorio(){
+        System.out.println("Recordatorio: Tomar " + medicamentoAsociado.getNombre() + " a las " + hora);
+        System.out.println("Frecuencia: cada " + frecuenciaHoras +" horas");
+    }
+
 
 }
