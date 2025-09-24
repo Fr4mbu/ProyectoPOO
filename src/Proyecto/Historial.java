@@ -10,6 +10,17 @@ public class Historial {
     public Historial() {
         this.registros = new ArrayList<>();
     }
+    
+    public void mostrarHistorial() {
+        if(registros.isEmpty()) {
+            System.out.println("El historial esta vacio");
+        } else {
+            System.out.println("----- HISTORIAL -----");
+            for(String r : registros) {
+                System.out.println(r);
+            }
+        }
+    }
 
 
 }
