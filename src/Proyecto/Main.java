@@ -54,5 +54,19 @@ public class Main {
         System.out.println("6. Mostrar historial ");
         System.out.println("7. Saliendo del sistema ");
     }
+
+    private static void agregarMedicamento() {
+        System.out.print("Ingrese el nombre del medicamento: ");
+        String nombre = scanner.nextLine();
+
+        int dosis = leerEntero("Ingrese dosis (mg/unidades): ");
+        int cantidad = leerEntero("Ingrese cantidad disponible: ");
+
+        System.out.println("Ingrese la fecha de vencimiento del medicamento (YYYY-MM-DD): ");
+        String fecha = scanner.nextLine();
+
+        Medicamento m = new Medicamento(nombre, dosis, cantidad, fecha);
+        paciente.agregarMedicamento(m);
+    }
 }
 
