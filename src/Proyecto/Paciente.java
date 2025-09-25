@@ -64,4 +64,8 @@ public class Paciente {
         System.out.println("Historial de " + nombre + ":");
         historial.mostrarHistorial();
     }
+
+    public List<Medicamento> getListaMedicamentos() {
+        return listaMedicamentos;
+    }
 }
