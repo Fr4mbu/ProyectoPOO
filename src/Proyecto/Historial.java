@@ -1,5 +1,7 @@
 package Proyecto;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +15,8 @@ public class Historial {
 
     //metodo para agregar registro
     public void agregarRegistro(String registro) {
-        registros.add(registro);
+        String fechaHora = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
+        registros.add("[" + fechaHora + "]" + registro);
     }
     
     public void mostrarHistorial() {
