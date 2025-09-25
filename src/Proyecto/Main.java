@@ -112,5 +112,17 @@ public class Main {
             System.out.println((i + 1) + ". " + m.getNombre() + " (Stock: " + m.getCantidadDisponible() + ")");
         }
     }
+
+    private static int leerEntero(String mensaje) {
+        System.out.print(mensaje);
+        while (!scanner.hasNextInt()) {
+            System.out.println("❌ Entrada inválida. Ingrese un número.");
+            scanner.next(); // descartar entrada incorrecta
+            System.out.print(mensaje);
+        }
+        int valor = scanner.nextInt();
+        scanner.nextLine(); // limpiar buffer
+        return valor;
+    }
 }
 
