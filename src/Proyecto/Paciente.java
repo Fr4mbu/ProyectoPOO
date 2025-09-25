@@ -4,16 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Paciente {
-    private String nombre;
-    private int edad;
+    public String nombre;
+    public int edad;
+    private String clave;
     private List<Medicamento> listaMedicamentos;
     private List<Recordatorio> listaRecordatorios;
     private Historial historial;
 
     //constructor
-    public Paciente(String nombre, int edad) {
+    public Paciente(String nombre, int edad, String clave) {
         this.nombre = nombre;
         this.edad = edad;
+        this.clave = clave;
         this.listaMedicamentos = new ArrayList<>();
         this.listaRecordatorios = new ArrayList<>();
         this.historial = new Historial();
