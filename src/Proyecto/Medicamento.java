@@ -1,6 +1,5 @@
 package Proyecto;
 
-
 public class Medicamento {
     private String nombre;
     private int dosis; //para dosis en mg o unidades
