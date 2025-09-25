@@ -105,5 +105,12 @@ public class Main {
 
         paciente.tomarMedicamento(med);
     }
+
+    private static void mostrarMedicamentosEnumerados() {
+        for (int i = 0; i < paciente.getListaMedicamentos().size(); i++) {
+            Medicamento m = paciente.getListaMedicamentos().get(i);
+            System.out.println((i + 1) + ". " + m.getNombre() + " (Stock: " + m.getCantidadDisponible() + ")");
+        }
+    }
 }
 
