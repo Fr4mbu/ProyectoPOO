@@ -1,4 +1,4 @@
-package Proyecto;
+package Proyecto.Modelo;
 
 //heredada de medicamento
 public class Insulina extends Medicamento {
@@ -27,15 +27,16 @@ public class Insulina extends Medicamento {
     public double getNivelGlucosa() {
         return nivelGlucosa;
     }
-     public void setNivelGlucosa(double nivelGlucosa) {
+
+    public void setNivelGlucosa(double nivelGlucosa) {
         this.nivelGlucosa = nivelGlucosa;
-     }
+    }
 
-     public int getDosisRecomendada() {
+    public int getDosisRecomendada() {
         return dosisRecomendada;
-     }
+    }
 
-     public void setDosisRecomendada(int dosisRecomendada) {
+    public void setDosisRecomendada(int dosisRecomendada) {
         this.dosisRecomendada = dosisRecomendada;
      }
 }
