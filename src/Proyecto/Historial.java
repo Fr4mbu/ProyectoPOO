@@ -13,7 +13,7 @@ public class Historial {
         this.registros = new ArrayList<>();
     }
 
-    //metodo para agregar registro
+    //metodo para agregar registro con fecha y hora automatica
     public void agregarRegistro(String registro) {
         String fechaHora = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
         registros.add("[" + fechaHora + "]" + registro);
