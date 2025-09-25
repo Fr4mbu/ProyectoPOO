@@ -1,4 +1,4 @@
-package Proyecto;
+package Proyecto.Modelo;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -30,8 +30,12 @@ public class Historial {
         }
     }
 
-    //getter
+    //getters y setters
     public List<String> getRegistros() {
         return registros;
+    }
+
+    public void setRegistros(List<String> registros) {
+        this.registros = registros;
     }
 }
