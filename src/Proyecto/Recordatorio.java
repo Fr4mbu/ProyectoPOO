@@ -20,6 +20,14 @@ public class Recordatorio {
         System.out.println("Frecuencia: cada " + frecuenciaHoras +" horas");
     }
 
+    //verificar si es hora de tomar medicamento
+    public void verificarAlerta() {
+        LocalTime ahora = LocalTime.now();
+        if (ahora.getHour() == hora.getHour() && ahora.getMinute() == hora.getMinute()) {
+            System.out.println("Alerta: Es hora de tomar " + medicamentoAsociado.getNombre());
+        }
+    }
+
     //getters
     public LocalTime getHora() {
         return hora;
