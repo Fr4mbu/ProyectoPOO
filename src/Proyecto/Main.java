@@ -68,5 +68,27 @@ public class Main {
         Medicamento m = new Medicamento(nombre, dosis, cantidad, fecha);
         paciente.agregarMedicamento(m);
     }
+
+    private static void agregarRecordatorio() {
+        if (paciente.getListaMedicamentos().isEmpy()) {
+            System.out.print("El paciente no tiene medicamentos. Agregue medicamentos ");
+            return;
+        }
+
+        System.out.print("Seleccione un medicamento para asociar: ");
+        mostrarMedicamentosEnumerados();
+
+        int seleccion = leerEntero("Opcion: ");
+        Medicamento med = paciente.getListaMedicamentos().get(seleccion - 1);
+
+        System.out.print("Ingrese hora del recordatorio (HH:MM): ");
+        String horaInput = scanner.nextLine();
+        LocalTime hora = LocalTime.parse(horaInput);
+
+        int frecuencia = leerEntero("Ingrese frecuencia en horas: ");
+
+        Recordatorio r = new Recordatorio(hora, frecuencia, med);
+        paciente.agregarRecordatorio(r);
+    }
 }
 
