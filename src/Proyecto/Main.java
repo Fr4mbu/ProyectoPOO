@@ -116,7 +116,7 @@ public class Main {
     private static int leerEntero(String mensaje) {
         System.out.print(mensaje);
         while (!scanner.hasNextInt()) {
-            System.out.println("❌ Entrada inválida. Ingrese un número.");
+            System.out.println("Entrada invalida");
             scanner.next(); // descartar entrada incorrecta
             System.out.print(mensaje);
         }
