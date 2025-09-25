@@ -32,5 +32,15 @@ public class Main {
             }
         } while (opcion !=7);
     }
+
+    private static void crearPaciente() {
+        System.out.print("Ingrese su nombre: ");
+        String nombre = scanner.nextLine();
+
+        int edad = leerEntero("Ingrese su edad: ");
+
+        paciente = new Paciente(nombre, edad);
+        System.out.println("Paciente creado");
+    }
 }
 
