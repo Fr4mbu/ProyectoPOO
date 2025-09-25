@@ -8,11 +8,11 @@ public class Medicamento {
     private String fechaVencimiento;
 
     //constructor
-    public Medicamento(String nombre, int dosis, int cantidad, String fecha) {
+    public Medicamento(String nombre, int dosis, int cantidad, String fechaVencimiento) {
         this.nombre = nombre;
         this.dosis = dosis;
         this.cantidadDisponible = cantidad;
-        this.fechaVencimiento = fecha;
+        this.fechaVencimiento = fechaVencimiento;
     }
 
     //metodo para tomar dosis
