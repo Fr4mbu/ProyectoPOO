@@ -1,6 +1,7 @@
 package Proyecto;
 
 import java.util.Scanner;
+import java.time.LocalTime;
 
 public class Main {
     private static Scanner scanner = new Scanner(System.in);
@@ -70,7 +71,7 @@ public class Main {
     }
 
     private static void agregarRecordatorio() {
-        if (paciente.getListaMedicamentos().isEmpy()) {
+        if (paciente.getListaMedicamentos().isEmpty()) {
             System.out.print("El paciente no tiene medicamentos. Agregue medicamentos ");
             return;
         }
@@ -103,7 +104,7 @@ public class Main {
         int seleccion = leerEntero("Opcion: ");
         Medicamento med = paciente.getListaMedicamentos().get(seleccion - 1);
 
-        paciente.tomarMedicamento(med);
+        paciente.tomarMedicamento(med.getNombre());
     }
 
     private static void mostrarMedicamentosEnumerados() {
