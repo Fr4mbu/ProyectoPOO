@@ -1,23 +1,24 @@
 package Proyecto;
 
-//clase de prueba para ver si funciona la clase medicamento
+//clase de prueba para ver si funciona la clase insulina
 public class Main {
     public static void main(String[] args) {
 
-        //crear medicamento
-        Medicamento paracetamol = new Medicamento("Paracetamol", 500, 5, "2025-09-24");
+        //crear insulina
+        Insulina insulina = new Insulina("Insulina", 10, 10, "2025 - 09 - 24", 200, 8);
 
-        //mostrar informacion inicial
-        System.out.println("Medicamento: " + paracetamol.getNombre());
-        System.out.println("Stock inicial: " + paracetamol.getCantidadDisponible());
+        //mostrar informacion y recomendacion
+        System.out.println("Nombre: " + insulina.getNombre());
+        System.out.println("Stock inicial: " + insulina.getCantidadDisponible());
+        insulina.recomendarDosis();
 
-        //tomar dosis varias veces
-        paracetamol.tomarDosis(); //primera dosis
-        paracetamol.tomarDosis(); //sugunda
-        paracetamol.tomarDosis(); //tercera
+        //tomar una dosis de insulina
+        insulina.tomarDosis();
+        System.out.println("Stock restante: " + insulina.getCantidadDisponible());
 
-        //mostrar stock
-        System.out.println("Stock final: " + paracetamol.getCantidadDisponible());
+        //cambiar nivel de glucosa y volver a recomendar
+        insulina.setNivelGlucosa(95);
+        insulina.recomendarDosis();
     }
 }
 
