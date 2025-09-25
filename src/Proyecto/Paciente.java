@@ -32,13 +32,15 @@ public class Paciente {
     }
 
     //tomar un medicamento, actualizacion de stock + historial
-    public void tomarMedicamento(Medicamento m) {
-        if(listaMedicamentos.contains(m)) {
-            m.tomarDosis();
-            historial.agregarRegistro("Paciente " + nombre + "tomo " + m.getNombre());
-        } else {
-            System.out.println("El medicamento " + m.getNombre() + " no esta en la lista de medicamentos");
+    public void tomarMedicamento(String nombreMedicamento) {
+        for (Medicamento m : listaMedicamentos) {
+            if (m.getNombre().equalsIgnoreCase(nombreMedicamento)) {
+                m.tomarDosis();
+                historial.agregarRegistro("Paciente " + nombre + " tomo " + m.getNombre());
+                return;
+            }
         }
+        System.out.println("Medicamento " + nombreMedicamento + " no esta en la lista de medicamentos");
     }
 
     //mostrar medicamentos del paciente
