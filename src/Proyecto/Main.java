@@ -42,5 +42,17 @@ public class Main {
         paciente = new Paciente(nombre, edad);
         System.out.println("Paciente creado");
     }
+
+    //metodos del menu
+    private static void mostrarMenu() {
+        System.out.println("\n----- Menu  -----");
+        System.out.println("1. Agregar medicamento ");
+        System.out.println("2. Agregar recordatorio ");
+        System.out.println("3. Tomar medicamento ");
+        System.out.println("4. Mostrar medicamentos ");
+        System.out.println("5. Mostrar recordatorios ");
+        System.out.println("6. Mostrar historial ");
+        System.out.println("7. Saliendo del sistema ");
+    }
 }
 
