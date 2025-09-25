@@ -57,6 +57,9 @@ public class Paciente {
         }
     }
 
-
-
+    //mostrar historial al paciente
+    public void mostrarHistorial() {
+        System.out.println("Historial de " + nombre + ":");
+        historial.mostrarHistorial();
+    }
 }
