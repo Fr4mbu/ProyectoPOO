@@ -49,6 +49,14 @@ public class Paciente {
         }
     }
 
+    //mostrar recordatorios para los pacientes
+    public void mostrarRecordatorios() {
+        System.out.println("Recordatorios de " + nombre + ":");
+        for (Recordatorio r : listaRecordatorios) {
+            r.mostrarRecordatorio();
+        }
+    }
+
 
 
 }
