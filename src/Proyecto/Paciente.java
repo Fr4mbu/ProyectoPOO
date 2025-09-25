@@ -41,5 +41,14 @@ public class Paciente {
         }
     }
 
+    //mostrar medicamentos del paciente
+    public void mostrarMedicamentos() {
+        System.out.println("Medicamentos de " + nombre + ":");
+        for (Medicamento m : listaMedicamentos) {
+            System.out.println("- " + m.getNombre() + "(stock: " + m.getCantidadDisponible() + ")");
+        }
+    }
+
+
 
 }
