@@ -90,5 +90,20 @@ public class Main {
         Recordatorio r = new Recordatorio(hora, frecuencia, med);
         paciente.agregarRecordatorio(r);
     }
+
+    private static void tomarMedicamento() {
+        if (paciente.getListaMedicamentos().isEmpty()) {
+            System.out.println("No hay medicamentos registrados ");
+            return;
+        }
+
+        System.out.println("Seleccione un medicamento para tomar: ");
+        mostrarMedicamentosEnumerados();
+
+        int seleccion = leerEntero("Opcion: ");
+        Medicamento med = paciente.getListaMedicamentos().get(seleccion - 1);
+
+        paciente.tomarMedicamento(med);
+    }
 }
 
