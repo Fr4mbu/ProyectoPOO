@@ -1,24 +1,22 @@
 package Proyecto.Vista;
 
 import Proyecto.Controlador.ControladorPaciente;
-import Proyecto.Modelo.Paciente;
+import Proyecto.Modelo.Medicamento;
 
 import javax.swing.*;
-import java.util.Arrays;
+import java.awt.*;
 import java.util.List;
-import java.util.ArrayList;
 
 public class VentanaPaciente {
     private ControladorPaciente controlador;
     private JFrame frame;
-    private JTextField txtUsuario;
-    private JTextField txtEdad;
-    private JPasswordField txtContrasena;
-    private JButton btnIngresar;
-    private JButton btnRegistrar;
 
-    //lista de pacientes
-    public static final List<Paciente> PACIENTES = new ArrayList<>();
+    //componentes GUI
+    private JTextField txtMedicamento;
+    private JTextField txtDosis;
+    private JButton btnAgregar;
+    private JButton btnTomar;
+    private JTextArea txtHistorial;
 
     public VentanaPaciente(ControladorPaciente controlador) {
         this.controlador = controlador;
@@ -26,66 +24,64 @@ public class VentanaPaciente {
     }
 
     private void initComponentes() {
-        frame = new JFrame("Registro de Paciente");
-        frame.setSize(400,300);
+        frame = new JFrame("Panel Paciente");
+        frame.setSize(500, 400);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(null);
 
-        JLabel lblUsuario = new JLabel("Paciente: ");
-        lblUsuario.setBounds(50,30,150,25);
-        txtUsuario = new JTextField();
-        txtUsuario.setBounds(50,55,150,25);
+        JLabel lblMed = new JLabel("Medicamento: ");
+        lblMed.setBounds(20, 20, 100, 25);
+        txtMedicamento = new JTextField();
+        txtMedicamento.setBounds(120, 20, 150, 25);
 
-        JLabel lblEdad = new JLabel("Edad: ");
-        lblEdad.setBounds(50,80,150,25);
-        txtEdad = new JTextField("0");
-        txtEdad.setBounds(50,105,150,25);
+        JLabel lblDosis = new JLabel("Dosis: ");
+        lblDosis.setBounds(20, 50, 100, 25);
+        txtDosis = new JTextField();
+        txtDosis.setBounds(120, 50, 150, 25);
 
-        JLabel lblPassword = new JLabel("Contraseña: ");
-        lblPassword.setBounds(50,130,150,25);
-        txtContrasena= new JPasswordField();
-        txtContrasena.setBounds(50,155,150,25);
+        btnAgregar = new JButton("Agregar");
+        btnAgregar.setBounds(300, 20, 100, 25);
+        btnTomar = new JButton("Tomar");
+        btnTomar.setBounds(300, 50, 100, 25);
 
-        btnIngresar = new JButton("Ingresar");
-        btnIngresar.setBounds(250,180,100,30);
-        btnRegistrar = new JButton("Registrarse");
-        btnRegistrar.setBounds(100,180,120,30);
+        txtHistorial = new JTextArea();
+        txtHistorial.setEditable(false);
+        JScrollPane scroll = new JScrollPane(txtHistorial);
+        scroll.setBounds(20, 100, 440, 250);
 
-        frame.add(lblUsuario);
-        frame.add(txtUsuario);
-        frame.add(lblEdad);
-        frame.add(txtEdad);
-        frame.add(lblPassword);
-        frame.add(txtContrasena);
-        frame.add(btnIngresar);
-        frame.add(btnRegistrar);
+        frame.add(lblMed);
+        frame.add(txtMedicamento);
+        frame.add(lblDosis);
+        frame.add(txtDosis);
+        frame.add(btnAgregar);
+        frame.add(btnTomar);
+        frame.add(scroll);
 
-        btnRegistrar.addActionListener(e -> registrarPaciente());
-        btnIngresar.addActionListener(e -> ingresarPaciente());
+        //acciones botones
+        btnAgregar.addActionListener(e -> agregarMedicamento());
+        btnTomar.addActionListener(e -> tomarMedicamento());
 
         frame.setVisible(true);
+        actualizarHistorial();
     }
 
-    private void registrarPaciente() {
-        String nombre = txtUsuario.getText();
-        int edad = Integer.parseInt(txtEdad.getText());
-        String contraseña = new String(txtContrasena.getPassword());
-
-        Paciente p = new Paciente(nombre, edad, contraseña);
-        PACIENTES.add(p);
-        JOptionPane.showMessageDialog(frame, "Paciente registrado");
+    private void agregarMedicamento() {
+        String nombre = txtMedicamento.getText();
+        int dosis = Integer.parseInt(txtDosis.getText());
+        Medicamento m = new Medicamento(nombre, dosis, dosis, "N/A");
+        controlador.registrarMedicamento(m);
+        actualizarHistorial();
     }
 
-    private void ingresarPaciente() {
-        String nombre = txtUsuario.getText();
-        String contraseña = new String(txtContrasena.getPassword());
+    private void tomarMedicamento() {
+        String nombre = txtMedicamento.getText();
+        controlador.tomarMedicamento(nombre);
+        actualizarHistorial();
+    }
 
-        for (Paciente p : PACIENTES) {
-            if (p.getNombre().equalsIgnoreCase(nombre) && p.getClave().equals(contraseña)) {
-                JOptionPane.showMessageDialog(frame, "Registro exitoso");
-                return;
-            }
-        }
-        JOptionPane.showMessageDialog(frame, "Usuario o contraseña incorrecto");
+    private void actualizarHistorial() {
+        List<String> historial = controlador.obtenerHistorial();
+        txtHistorial.setText(String.join("\n", historial));
     }
 }
+
