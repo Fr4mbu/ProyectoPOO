@@ -1,4 +1,4 @@
-package Proyecto;
+package Proyecto.Modelo;
 
 import java.time.LocalTime;
 
@@ -28,16 +28,31 @@ public class Recordatorio {
         }
     }
 
-    //getters
+    //getters y setters
     public LocalTime getHora() {
         return hora;
     }
+    public void setHora(LocalTime hora) {
+        this.hora = hora;
+    }
 
-    public int  getFrecuenciaHoras() {
+    public int getFrecuenciaHoras() {
         return frecuenciaHoras;
+    }
+    public void setFrecuenciaHoras(int frecuenciaHoras) {
+        this.frecuenciaHoras = frecuenciaHoras;
     }
 
     public Medicamento getMedicamentoAsociado() {
         return medicamentoAsociado;
+    }
+    public void setMedicamentoAsociado(Medicamento medicamentoAsociado) {
+        this.medicamentoAsociado = medicamentoAsociado;
+    }
+
+    //metodo String
+    @Override
+    public String toString() {
+        return "Tomar " + medicamentoAsociado.getNombre() + " a las " + hora;
     }
 }
