@@ -4,71 +4,87 @@ import Proyecto.Controlador.ControladorPaciente;
 
 import javax.swing.*;
 import java.awt.*;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class LoginPaciente extends JFrame {
     private ControladorPaciente controlador;
+    private JFrame frame;
 
     private JTextField txtUsuario;
-    private JPasswordField txtClave;
-    private JButton btnLogin;
+    private JTextField txtEdad;
+    private JPasswordField txtContrasena;
+    private JButton btnIngresar;
+    private JButton btnRegistrar;
 
     public LoginPaciente(ControladorPaciente controlador) {
         this.controlador = controlador;
-
-        setTitle("Login Paciente");
-        setSize(350, 200);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
         initComponentes();
-        setVisible(true);
     }
 
     private void initComponentes() {
-        JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(3,2,10,10));
-        panel.setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
+        frame = new JFrame("Login Paciente");
+        frame.setSize(400, 300);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLayout(null);
 
-        panel.add(new JLabel("Usuario: "));
+        JLabel lblUsuario = new JLabel("Nombre: ");
+        lblUsuario.setBounds(50, 30, 100, 25);
         txtUsuario = new JTextField();
-        panel.add(txtUsuario);
+        txtUsuario.setBounds(150, 30, 150, 25);
 
-        panel.add(new JLabel("Contraseña: "));
-        txtClave = new JPasswordField();
-        panel.add(txtClave);
+        JLabel lblEdad = new JLabel("Edad: ");
+        lblEdad.setBounds(50, 70, 100, 25);
+        txtEdad = new JTextField("0");
+        txtEdad.setBounds(150, 70, 150, 25);
 
-        btnLogin = new JButton("Login");
-        btnLogin.addActionListener(new ActionListener() {
+        JLabel lblContrasena = new JLabel("Contraseña: ");
+        lblContrasena.setBounds(50, 110, 100, 25);
+        txtContrasena = new JPasswordField();
+        txtContrasena.setBounds(150, 110, 150, 25);
 
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                realizarLogin();
-            }
+        btnRegistrar = new JButton("Registrarse");
+        btnRegistrar.setBounds(50, 160, 130, 30);
+        btnIngresar = new JButton("Ingresar");
+        btnIngresar.setBounds(180, 160, 130, 30);
 
-        });
-        panel.add(new JLabel()); //espacio vacio
-        panel.add(btnLogin);
+        frame.add(lblUsuario);
+        frame.add(txtUsuario);
+        frame.add(lblEdad);
+        frame.add(txtEdad);
+        frame.add(lblContrasena);
+        frame.add(txtContrasena);
+        frame.add(btnRegistrar);
+        frame.add(btnIngresar);
 
-        add(panel);
+        //acciones de los botones
+        btnRegistrar.addActionListener(e -> registrarPaciente());
+        btnIngresar.addActionListener(e -> loginPaciente());
+
+        frame.setVisible(true);
     }
 
-    private void realizarLogin() {
-        String usuario = txtUsuario.getText();
-        String clave = new String(txtClave.getPassword());
+    private void registrarPaciente() {
+        String nombre = txtUsuario.getText();
+        int edad = Integer.parseInt(txtEdad.getText());
+        String clave = new String(txtContrasena.getPassword());
 
-        if(controlador.login(usuario, clave)) {
-            mostrarMensaje("Login exitoso");
-            VentanaPaciente ventana = new VentanaPaciente(controlador);
-            controlador.setVentanaPaciente(ventana);
-            this.dispose();
+        controlador.registrarPaciente(nombre, edad, clave);
+        JOptionPane.showMessageDialog(frame, "Paciente registrado correctamente");
+    }
+
+    private void loginPaciente() {
+        String nombre = txtUsuario.getText();
+        String clave = new String(txtContrasena.getPassword());
+
+        boolean exito = controlador.loginPaciente(nombre, clave);
+        if (exito) {
+            JOptionPane.showMessageDialog(frame, "Login exitoso");
+            frame.dispose();
         } else {
-            mostrarMensaje("Usuario o contraseña incorrectos");
+            JOptionPane.showMessageDialog(frame, "Usuario o contraseña incorrectos");
         }
-    }
-
-    public void mostrarMensaje(String mensaje) {
-        JOptionPane.showMessageDialog(this, mensaje);
     }
 }
 
