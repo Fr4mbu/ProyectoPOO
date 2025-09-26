@@ -1,11 +1,11 @@
-package Proyecto;
+package Proyecto.Modelo;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Paciente {
-    public String nombre;
-    public int edad;
+    private String nombre;
+    private int edad;
     private String clave;
     private List<Medicamento> listaMedicamentos;
     private List<Recordatorio> listaRecordatorios;
@@ -67,7 +67,46 @@ public class Paciente {
         historial.mostrarHistorial();
     }
 
+    //getters y setters
+    public String getNombre() {
+        return nombre;
+    }
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public int getEdad() {
+        return edad;
+    }
+    public void setEdad(int edad) {
+        this.edad = edad;
+    }
+
+    public String getClave() {
+        return clave;
+    }
+    public void setClave(String clave) {
+        this.clave = clave;
+    }
+
     public List<Medicamento> getListaMedicamentos() {
         return listaMedicamentos;
+    }
+    public void setListaMedicamentos(List<Medicamento> listaMedicamentos) {
+        this.listaMedicamentos = listaMedicamentos;
+    }
+
+    public List<Recordatorio> getListaRecordatorios() {
+        return listaRecordatorios;
+    }
+    public void setListaRecordatorios(List<Recordatorio> listaRecordatorios) {
+        this.listaRecordatorios = listaRecordatorios;
+    }
+
+    public Historial getHistorial() {
+        return historial;
+    }
+    public void setHistorial(Historial historial) {
+        this.historial = historial;
     }
 }
