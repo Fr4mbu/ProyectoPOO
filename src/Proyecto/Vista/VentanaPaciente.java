@@ -27,35 +27,46 @@ public class VentanaPaciente {
         frame = new JFrame("Panel Paciente");
         frame.setSize(500, 400);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLayout(null);
+        frame.setLayout(new BorderLayout(10,10));
+
+        //panel superior para ingresar medicamento
+        JPanel panelEntrada = new JPanel();
+        panelEntrada.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(5,5,5,5);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
 
         JLabel lblMed = new JLabel("Medicamento: ");
-        lblMed.setBounds(20, 20, 100, 25);
-        txtMedicamento = new JTextField();
-        txtMedicamento.setBounds(120, 20, 150, 25);
+        gbc.gridx = 0; gbc.gridy = 0;
+        panelEntrada.add(lblMed, gbc);
+
+        txtMedicamento = new JTextField(15);
+        gbc.gridx = 1; gbc.gridy = 0;
+        panelEntrada.add(txtMedicamento, gbc);
 
         JLabel lblDosis = new JLabel("Dosis: ");
-        lblDosis.setBounds(20, 50, 100, 25);
-        txtDosis = new JTextField();
-        txtDosis.setBounds(120, 50, 150, 25);
+        gbc.gridx = 0; gbc.gridy = 1;
+        panelEntrada.add(lblDosis, gbc);
+
+        txtDosis = new JTextField(15);
+        gbc.gridx = 1; gbc.gridy = 1;
+        panelEntrada.add(txtDosis, gbc);
 
         btnAgregar = new JButton("Agregar");
-        btnAgregar.setBounds(300, 20, 100, 25);
-        btnTomar = new JButton("Tomar");
-        btnTomar.setBounds(300, 50, 100, 25);
+        gbc.gridx = 0; gbc.gridy = 2;
+        panelEntrada.add(btnAgregar, gbc);
 
+        btnTomar = new JButton("Tomar");
+        gbc.gridx = 1; gbc.gridy = 2;
+        panelEntrada.add(btnTomar, gbc);
+
+        frame.add(panelEntrada, BorderLayout.NORTH);
+
+        //panel central para historial
         txtHistorial = new JTextArea();
         txtHistorial.setEditable(false);
         JScrollPane scroll = new JScrollPane(txtHistorial);
-        scroll.setBounds(20, 100, 440, 250);
-
-        frame.add(lblMed);
-        frame.add(txtMedicamento);
-        frame.add(lblDosis);
-        frame.add(txtDosis);
-        frame.add(btnAgregar);
-        frame.add(btnTomar);
-        frame.add(scroll);
+        frame.add(scroll, BorderLayout.CENTER);
 
         //acciones botones
         btnAgregar.addActionListener(e -> agregarMedicamento());
@@ -66,16 +77,37 @@ public class VentanaPaciente {
     }
 
     private void agregarMedicamento() {
-        String nombre = txtMedicamento.getText();
-        int dosis = Integer.parseInt(txtDosis.getText());
+        String nombre = txtMedicamento.getText().trim();
+        if(nombre.isEmpty()) {
+            JOptionPane.showMessageDialog(frame, "Ingrese el nombre del medicamento");
+            return;
+        }
+
+        int dosis;
+        try {
+            dosis = Integer.parseInt(txtDosis.getText().trim());
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(frame, "Ingrese un numero valido para la dosis");
+            return;
+        }
+
         Medicamento m = new Medicamento(nombre, dosis, dosis, "N/A");
         controlador.registrarMedicamento(m);
+        txtMedicamento.setText("");
+        txtDosis.setText("");
         actualizarHistorial();
     }
 
     private void tomarMedicamento() {
-        String nombre = txtMedicamento.getText();
+        String nombre = txtMedicamento.getText().trim();
+        if(nombre.isEmpty()) {
+            JOptionPane.showMessageDialog(frame, "Ingrese el nombre del medicamento para tomar");
+            return;
+        }
+
         controlador.tomarMedicamento(nombre);
+        txtMedicamento.setText("");
+        txtDosis.setText("");
         actualizarHistorial();
     }
 
@@ -83,5 +115,10 @@ public class VentanaPaciente {
         List<String> historial = controlador.obtenerHistorial();
         txtHistorial.setText(String.join("\n", historial));
     }
+
+    public void mostrarMensaje(String mensaje) {
+        JOptionPane.showMessageDialog(frame, mensaje);
+    }
 }
+
 
