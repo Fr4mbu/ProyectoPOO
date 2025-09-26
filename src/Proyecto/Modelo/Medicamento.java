@@ -1,4 +1,4 @@
-package Proyecto;
+package Proyecto.Modelo;
 
 public class Medicamento {
     private String nombre;
@@ -24,12 +24,41 @@ public class Medicamento {
         }
     }
 
-    //metodos getter
+    //getter y setters
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public int getDosis() {
+        return dosis;
+    }
+
+    public void setDosis(int dosis) {
+        this.dosis = dosis;
+    }
+
     public int getCantidadDisponible() {
         return cantidadDisponible;
     }
 
-    public String getNombre() {
-        return nombre;
+    public void setCantidadDisponible(int cantidadDisponible) {
+        this.cantidadDisponible = cantidadDisponible;
+    }
+
+    public String getFechaVencimiento() {
+        return fechaVencimiento;
+    }
+
+    public void setFechaVencimiento(String fechaVencimiento) {
+        this.fechaVencimiento = fechaVencimiento;
+    }
+
+    @Override
+    public String toString() {
+        return nombre + " | Dosis: " + dosis + " | Stock: " + cantidadDisponible + " | Vence: " + fechaVencimiento;
     }
 }
