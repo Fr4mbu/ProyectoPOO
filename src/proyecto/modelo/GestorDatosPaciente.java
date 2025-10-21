@@ -36,6 +36,13 @@ public class GestorDatosPaciente {
         }
     }
 
+    //metodo para cargar los datos de los pacientes
+    public void cargarDatos() {
+        cargarMedicamentos();
+        cargarRecordatorios();
+        cargarHistorial();
+    }
+
 
 
 
