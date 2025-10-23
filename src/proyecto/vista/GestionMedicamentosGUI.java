@@ -1,8 +1,6 @@
 package proyecto.vista;
 
 import proyecto.controlador.ControladorMedicamentos;
-import proyecto.vista.PantallaInicio;
-
 import proyecto.modelo.Medicamento;
 import proyecto.modelo.Insulina;
 import proyecto.modelo.Paciente;
@@ -17,7 +15,7 @@ import java.awt.event.WindowEvent;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-
+import proyecto.vista.PantallaInicio;
 
 public class GestionMedicamentosGUI extends JFrame {
 
@@ -33,7 +31,7 @@ public class GestionMedicamentosGUI extends JFrame {
         this.controladorMed = controladorMed;
         this.paciente = paciente;
         setTitle("Gestion de Medicamentos - " + paciente.getNombre());
-        setSize(700, 500);
+        setSize(800, 600);
         setLocationRelativeTo(null);
 
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -60,47 +58,64 @@ public class GestionMedicamentosGUI extends JFrame {
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
 
+        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
         JSplitPane splitNorte = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
         splitNorte.setResizeWeight(0.5);
+        splitNorte.setDividerSize(8);
+
+        Font fuenteUI = new JLabel().getFont();
 
         medicamentosArea = new JTextArea(5, 40);
         medicamentosArea.setEditable(false);
+        medicamentosArea.setFont(fuenteUI);
         JScrollPane scrollMeds = new JScrollPane(medicamentosArea);
         splitNorte.setTopComponent(scrollMeds);
 
         recordatoriosArea = new JTextArea(5, 40);
         recordatoriosArea.setEditable(false);
+        recordatoriosArea.setFont(fuenteUI);
         JScrollPane scrollRecs = new JScrollPane(recordatoriosArea);
         splitNorte.setBottomComponent(scrollRecs);
         panel.add(splitNorte, BorderLayout.NORTH);
 
         historialArea = new JTextArea(10, 40);
         historialArea.setEditable(false);
+        historialArea.setFont(fuenteUI);
         JScrollPane scrollHistorial = new JScrollPane(historialArea);
+        scrollHistorial.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
         panel.add(scrollHistorial, BorderLayout.CENTER);
 
-        JPanel panelSur = new JPanel(new FlowLayout());
-        panelSur.add(new JLabel("Seleccionar medicamento:"));
+        JPanel panelSur = new JPanel();
+        panelSur.setLayout(new BoxLayout(panelSur, BoxLayout.Y_AXIS));
+        panelSur.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
+
+        JPanel panelFila1 = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        panelFila1.add(new JLabel("Seleccionar medicamento:"));
         comboMedicamentos = new JComboBox<>();
-        panelSur.add(comboMedicamentos);
+        panelFila1.add(comboMedicamentos);
 
         JButton btnTomar = new JButton("Tomar medicamento");
-        panelSur.add(btnTomar);
+        panelFila1.add(btnTomar);
 
         JButton btnAgregar = new JButton("Agregar medicamento");
-        panelSur.add(btnAgregar);
+        panelFila1.add(btnAgregar);
 
+        JPanel panelFila2 = new JPanel(new FlowLayout(FlowLayout.CENTER));
         JButton btnRecordatorio = new JButton("Agregar recordatorio");
-        panelSur.add(btnRecordatorio);
+        panelFila2.add(btnRecordatorio);
 
         JButton btnVerificarRecs = new JButton("Verificar recordatorios");
-        panelSur.add(btnVerificarRecs);
+        panelFila2.add(btnVerificarRecs);
 
         JButton btnRemover = new JButton("Remover medicamento");
-        panelSur.add(btnRemover);
+        panelFila2.add(btnRemover);
 
         JButton btnCerrarSesion = new JButton("Cerrar Sesion");
-        panelSur.add(btnCerrarSesion);
+        panelFila2.add(btnCerrarSesion);
+
+        panelSur.add(panelFila1);
+        panelSur.add(panelFila2);
 
         panel.add(panelSur, BorderLayout.SOUTH);
         add(panel);
@@ -115,7 +130,15 @@ public class GestionMedicamentosGUI extends JFrame {
 
     private void cargarComboMedicamentos() {
         comboMedicamentos.removeAllItems();
+        Object seleccionado = comboMedicamentos.getSelectedItem();
+
         String textoMeds = controladorMed.obtenerTextoMedicamentos();
+        if (textoMeds.equals("No hay medicamentos registrados")) {
+            comboMedicamentos.setEnabled(false);
+            return;
+        }
+
+        comboMedicamentos.setEnabled(true);
         for (String linea : textoMeds.split("\n")) {
             if (linea.contains("- ") && linea.contains("(")) {
                 String nombre = linea.substring(2, linea.indexOf(" (")).trim();
@@ -123,6 +146,10 @@ public class GestionMedicamentosGUI extends JFrame {
                     comboMedicamentos.addItem(nombre);
                 }
             }
+        }
+
+        if (seleccionado != null) {
+            comboMedicamentos.setSelectedItem(seleccionado);
         }
     }
 
@@ -199,12 +226,16 @@ public class GestionMedicamentosGUI extends JFrame {
     }
 
     private void agregarRecordatorioDialog() {
-        String nombreMed = (String) JOptionPane.showInputDialog(this, "Nombre del medicamento para recordatorio:");
-        if (nombreMed == null || nombreMed.trim().isEmpty()) return;
+        String nombreMed = (String) comboMedicamentos.getSelectedItem();
+        if (nombreMed == null || nombreMed.trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Primero selecciona un medicamento del ComboBox", "Error", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
 
-        String horaStr = JOptionPane.showInputDialog(this, "Hora (HH:mm):");
+        String horaStr = JOptionPane.showInputDialog(this, "Hora (HH:mm) para " + nombreMed + ":");
         if (horaStr == null || !horaStr.matches("\\d{2}:\\d{2}")) {
-            JOptionPane.showMessageDialog(this, "Formato de hora invalido (HH:mm)", "Error", JOptionPane.ERROR_MESSAGE);
+            if(horaStr != null)
+                JOptionPane.showMessageDialog(this, "Formato de hora invalido (HH:mm)", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
         LocalTime hora = LocalTime.parse(horaStr, DateTimeFormatter.ofPattern("HH:mm"));
@@ -235,7 +266,6 @@ public class GestionMedicamentosGUI extends JFrame {
         String msg = controladorMed.agregarRecordatorio(r);
         JOptionPane.showMessageDialog(this, msg, "Resultado", JOptionPane.INFORMATION_MESSAGE);
         actualizarRecordatoriosArea();
-        cargarComboMedicamentos();
     }
 
     private void verificarRecordatorios() {
@@ -253,9 +283,20 @@ public class GestionMedicamentosGUI extends JFrame {
     }
 
     private void removerMedicamento() {
-        String nombre = (String) JOptionPane.showInputDialog(this, "Nombre del medicamento a remover:");
-        if (nombre != null && !nombre.trim().isEmpty()) {
-            String msg = controladorMed.removerMedicamento(nombre.trim());
+        String nombreSeleccionado = (String) comboMedicamentos.getSelectedItem();
+        if (nombreSeleccionado == null || nombreSeleccionado.trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Selecciona un medicamento para remover", "Error", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        int confirm = JOptionPane.showConfirmDialog(this,
+                "¿Estas seguro de que deseas eliminar '" + nombreSeleccionado + "'?",
+                "Confirmar eliminacion",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.WARNING_MESSAGE);
+
+        if (confirm == JOptionPane.YES_OPTION) {
+            String msg = controladorMed.removerMedicamento(nombreSeleccionado.trim());
             JOptionPane.showMessageDialog(this, msg, "Resultado", JOptionPane.INFORMATION_MESSAGE);
             actualizarTodo();
             cargarComboMedicamentos();
@@ -265,6 +306,7 @@ public class GestionMedicamentosGUI extends JFrame {
     public void actualizarMedicamentosArea() {
         medicamentosArea.setText(controladorMed.obtenerTextoMedicamentos());
     }
+
 
     public void actualizarHistorialArea() {
         historialArea.setText(controladorMed.obtenerTextoHistorial());
@@ -292,6 +334,7 @@ public class GestionMedicamentosGUI extends JFrame {
         if (recordatorioTimer != null) {
             recordatorioTimer.stop();
         }
+
         PantallaInicio inicio = new PantallaInicio();
         inicio.setVisible(true);
 
