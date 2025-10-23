@@ -1,9 +1,6 @@
 package proyecto.modelo;
 
 import java.io.*;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Optional;
 
 public class GestorDatosPaciente {
 
