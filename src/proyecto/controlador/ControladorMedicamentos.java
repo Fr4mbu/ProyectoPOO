@@ -4,7 +4,6 @@ import proyecto.modelo.Paciente;
 import proyecto.modelo.Medicamento;
 import proyecto.modelo.Recordatorio;
 import proyecto.modelo.GestorDatosPaciente;
-import java.time.LocalTime;
 import java.util.List;
 
 public class ControladorMedicamentos {
