@@ -19,6 +19,13 @@ public class HistorialMedico {
         registros.add(registroConTiempo);
     }
 
+    public void agregarRegistroDirecto(String registroCompleto) {
+        if (registroCompleto == null || registroCompleto.trim().isEmpty()) {
+            return;
+        }
+        registros.add(registroCompleto.trim());
+    }
+
     public String obtenerTexto() {
         if (registros.isEmpty()) {
             return "No hay registros en el historial";

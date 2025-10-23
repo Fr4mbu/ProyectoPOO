@@ -2,6 +2,7 @@ package proyecto.controlador;
 
 import proyecto.modelo.Paciente;
 import proyecto.modelo.PacientesCSV;
+import proyecto.modelo.GestorDatosPaciente;
 import java.util.Optional;
 
 public class ControladorPaciente {
@@ -37,6 +38,12 @@ public class ControladorPaciente {
         if (optPaciente.isPresent()) {
             Paciente p = optPaciente.get();
             if (p.getClave().equals(clave.trim())) {
+                try {
+                    GestorDatosPaciente gestor = new GestorDatosPaciente(p);
+                    gestor.cargarDatos();
+                } catch (Exception e) {
+                    System.err.println("ERROR: No se pudieron cargar los datos para " + p.getRut() + ": " + e.getMessage());
+                }
                 return Optional.of(p);
             }
         }
