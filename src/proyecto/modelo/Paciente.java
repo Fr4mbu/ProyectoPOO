@@ -195,6 +195,18 @@ public class Paciente {
 
     public HistorialMedico getHistorial() { return historial; }
 
+    public void cargarMedicamento(Medicamento m) {
+        if (m != null) {
+            this.listaMedicamentos.add(m);
+        }
+    }
+
+    public void cargarRecordatorio(Recordatorio r) {
+        if (r != null) {
+            this.listaRecordatorios.add(r);
+        }
+    }
+
     @Override
     public String toString() {
         return "Paciente{" + "rut='" + rut + "', nombre='" + nombre + "', edad=" + edad + "}";
