@@ -15,6 +15,8 @@ import java.awt.event.WindowEvent;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+// Importamos la PantallaInicio para poder volver a ella
+import proyecto.vista.PantallaInicio;
 
 public class GestionMedicamentosGUI extends JFrame {
 
@@ -32,6 +34,7 @@ public class GestionMedicamentosGUI extends JFrame {
         setTitle("Gestion de Medicamentos - " + paciente.getNombre());
         setSize(700, 500);
         setLocationRelativeTo(null);
+
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         initComponents();
@@ -45,13 +48,7 @@ public class GestionMedicamentosGUI extends JFrame {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                if (recordatorioTimer != null) {
-                    recordatorioTimer.stop();
-                }
-
-                PantallaInicio inicio = new PantallaInicio();
-                inicio.setVisible(true);
-                super.windowClosing(e);
+                cerrarSesion();
             }
         });
 
@@ -101,6 +98,9 @@ public class GestionMedicamentosGUI extends JFrame {
         JButton btnRemover = new JButton("Remover medicamento");
         panelSur.add(btnRemover);
 
+        JButton btnCerrarSesion = new JButton("Cerrar Sesion");
+        panelSur.add(btnCerrarSesion);
+
         panel.add(panelSur, BorderLayout.SOUTH);
         add(panel);
 
@@ -109,6 +109,7 @@ public class GestionMedicamentosGUI extends JFrame {
         btnRecordatorio.addActionListener(e -> agregarRecordatorioDialog());
         btnVerificarRecs.addActionListener(e -> verificarRecordatorios());
         btnRemover.addActionListener(e -> removerMedicamento());
+        btnCerrarSesion.addActionListener(e -> cerrarSesion());
     }
 
     private void cargarComboMedicamentos() {
@@ -284,5 +285,15 @@ public class GestionMedicamentosGUI extends JFrame {
 
     public Paciente getPaciente() {
         return paciente;
+    }
+
+    private void cerrarSesion() {
+        if (recordatorioTimer != null) {
+            recordatorioTimer.stop();
+        }
+        PantallaInicio inicio = new PantallaInicio();
+        inicio.setVisible(true);
+
+        dispose();
     }
 }
