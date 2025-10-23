@@ -1,6 +1,8 @@
 package proyecto.vista;
 
 import proyecto.controlador.ControladorMedicamentos;
+import proyecto.vista.PantallaInicio;
+
 import proyecto.modelo.Medicamento;
 import proyecto.modelo.Insulina;
 import proyecto.modelo.Paciente;
@@ -15,8 +17,7 @@ import java.awt.event.WindowEvent;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-// Importamos la PantallaInicio para poder volver a ella
-import proyecto.vista.PantallaInicio;
+
 
 public class GestionMedicamentosGUI extends JFrame {
 
