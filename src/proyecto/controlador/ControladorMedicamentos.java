@@ -3,31 +3,44 @@ package proyecto.controlador;
 import proyecto.modelo.Paciente;
 import proyecto.modelo.Medicamento;
 import proyecto.modelo.Recordatorio;
-import proyecto.modelo.Insulina;
-
+import proyecto.modelo.GestorDatosPaciente;
 import java.time.LocalTime;
 import java.util.List;
 
 public class ControladorMedicamentos {
     private final Paciente paciente;
+    private final GestorDatosPaciente gestorDatos;
 
     public ControladorMedicamentos(Paciente paciente) {
         if (paciente == null) {
             throw new IllegalArgumentException("El paciente no puede ser nulo");
         }
         this.paciente = paciente;
+        this.gestorDatos = new GestorDatosPaciente(paciente);
     }
 
     public String agregarMedicamento(Medicamento m) {
-        return paciente.agregarMedicamento(m);
+        String resultado = paciente.agregarMedicamento(m);
+        if (resultado.startsWith("EXITO")) {
+            gestorDatos.guardarDatos();
+        }
+        return resultado;
     }
 
     public String tomarMedicamento(String nombre) {
-        return paciente.tomarMedicamento(nombre);
+        String resultado = paciente.tomarMedicamento(nombre);
+        if (resultado.startsWith("EXITO")) {
+            gestorDatos.guardarDatos();
+        }
+        return resultado;
     }
 
     public String removerMedicamento(String nombre) {
-        return paciente.removerMedicamento(nombre);
+        String resultado = paciente.removerMedicamento(nombre);
+        if (resultado.startsWith("EXITO")) {
+            gestorDatos.guardarDatos();
+        }
+        return resultado;
     }
 
     public String agregarRecordatorio(Recordatorio r) {
@@ -39,7 +52,11 @@ public class ControladorMedicamentos {
                     existing.getNombre().equalsIgnoreCase(r.getMedicamentoAsociado().getNombre()))) {
                 return "ERROR: El medicamento asociado al recordatorio no esta registrado";
             }
-            return paciente.agregarRecordatorio(r);
+            String resultado = paciente.agregarRecordatorio(r);
+            if (resultado.startsWith("EXITO")) {
+                gestorDatos.guardarDatos();
+            }
+            return resultado;
         } catch (IllegalArgumentException e) {
             return "ERROR de validacion: " + e.getMessage();
         } catch (Exception e) {
