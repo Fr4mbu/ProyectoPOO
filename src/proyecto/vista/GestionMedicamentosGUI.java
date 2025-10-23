@@ -32,7 +32,7 @@ public class GestionMedicamentosGUI extends JFrame {
         setTitle("Gestion de Medicamentos - " + paciente.getNombre());
         setSize(700, 500);
         setLocationRelativeTo(null);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         initComponents();
         actualizarMedicamentosArea();
@@ -48,6 +48,9 @@ public class GestionMedicamentosGUI extends JFrame {
                 if (recordatorioTimer != null) {
                     recordatorioTimer.stop();
                 }
+
+                PantallaInicio inicio = new PantallaInicio();
+                inicio.setVisible(true);
                 super.windowClosing(e);
             }
         });
