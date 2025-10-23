@@ -6,6 +6,8 @@ import proyecto.modelo.Paciente;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.Optional;
 
 public class LoginPacienteGUI extends JFrame {
@@ -19,37 +21,59 @@ public class LoginPacienteGUI extends JFrame {
         this.controlador = controlador;
 
         setTitle("Login Paciente");
-        setSize(350, 200);
+        setSize(400, 250); // Tamaño ajustado
         setLocationRelativeTo(null);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(new GridBagLayout());
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                new PantallaInicio().setVisible(true);
+            }
+        });
+
+        JPanel panel = new JPanel(new GridBagLayout());
+        panel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
+        add(panel);
 
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.insets = new Insets(10, 8, 10, 8);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+
+        JLabel lblTitulo = new JLabel("Iniciar Sesion");
+        lblTitulo.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 2;
+        panel.add(lblTitulo, gbc);
 
         JLabel lblRut = new JLabel("RUT:");
         gbc.gridx = 0;
-        gbc.gridy = 0;
-        add(lblRut, gbc);
+        gbc.gridy = 1;
+        gbc.gridwidth = 1;
+        panel.add(lblRut, gbc);
 
         txtRut = new JTextField(15);
         gbc.gridx = 1;
-        add(txtRut, gbc);
+        gbc.gridy = 1;
+        panel.add(txtRut, gbc);
 
         JLabel lblClave = new JLabel("Clave:");
         gbc.gridx = 0;
-        gbc.gridy = 1;
-        add(lblClave, gbc);
+        gbc.gridy = 2;
+        panel.add(lblClave, gbc);
 
         txtClave = new JPasswordField(15);
         gbc.gridx = 1;
-        add(txtClave, gbc);
-
-        btnLogin = new JButton("Iniciar Sesion");
-        gbc.gridx = 0;
         gbc.gridy = 2;
+        panel.add(txtClave, gbc);
+
+        btnLogin = new JButton("Entrar");
+        gbc.gridx = 0;
+        gbc.gridy = 3;
         gbc.gridwidth = 2;
-        add(btnLogin, gbc);
+        gbc.ipady = 10;
+        panel.add(btnLogin, gbc);
 
         btnLogin.addActionListener(e -> procesarLogin());
     }
