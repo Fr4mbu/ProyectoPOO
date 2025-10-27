@@ -1,15 +1,25 @@
 package proyecto.modelo;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonSyntaxException;
+
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GestorDatosPaciente {
 
     private final Paciente paciente;
     private final String rutPaciente;
+    private final String ARCHIVO_JSON;
+    private final Gson gson;
 
-    private final String ARCHIVO_MEDICAMENTOS;
-    private final String ARCHIVO_RECORDATORIOS;
-    private final String ARCHIVO_HISTORIAL;
+    private static class PacienteData {
+        List<String> medicamentosCSV;
+        List<String> recordatoriosCSV;
+        List<String> historialLineas;
+    }
 
     public GestorDatosPaciente(Paciente paciente) {
         if (paciente == null) {
@@ -18,118 +28,92 @@ public class GestorDatosPaciente {
         this.paciente = paciente;
         this.rutPaciente = paciente.getRut().replaceAll("[^a-zA-Z0-9.-]", "_");
 
-        this.ARCHIVO_MEDICAMENTOS = rutPaciente + "_medicamentos.csv";
-        this.ARCHIVO_RECORDATORIOS = rutPaciente + "_recordatorios.csv";
-        this.ARCHIVO_HISTORIAL = rutPaciente + "_historial.csv";
+        this.ARCHIVO_JSON = rutPaciente + ".json";
+
+        this.gson = new GsonBuilder().setPrettyPrinting().create();
     }
 
     public void guardarDatos() {
-        try {
-            guardarMedicamentos();
-            guardarRecordatorios();
-            guardarHistorial();
+        PacienteData data = new PacienteData();
+
+        data.medicamentosCSV = new ArrayList<>();
+        for (Medicamento med : paciente.getListaMedicamentos()) {
+            if (med instanceof Insulina) {
+                data.medicamentosCSV.add("Insulina;" + med.toCSV());
+            } else {
+                data.medicamentosCSV.add("Medicamento;" + med.toCSV());
+            }
+        }
+
+        data.recordatoriosCSV = new ArrayList<>();
+        for (Recordatorio rec : paciente.getListaRecordatorios()) {
+            data.recordatoriosCSV.add(rec.toCSV());
+        }
+
+        data.historialLineas = paciente.getHistorial().getRegistros();
+
+        try (Writer writer = new BufferedWriter(new FileWriter(ARCHIVO_JSON))) {
+            gson.toJson(data, writer);
         } catch (IOException e) {
-            System.err.println("Error al guardar datos para " + rutPaciente + ": " + e.getMessage());
+            System.err.println("Error al guardar JSON para " + rutPaciente + ": " + e.getMessage());
         }
     }
 
     public void cargarDatos() {
-        cargarMedicamentos();
-        cargarRecordatorios();
-        cargarHistorial();
-    }
+        File f = new File(ARCHIVO_JSON);
+        if (!f.exists()) {
+            return;
+        }
 
-    private void guardarMedicamentos() throws IOException {
-        //se usa try-with-resources para asegurar que el writer se cierre
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(ARCHIVO_MEDICAMENTOS))) {
-            bw.write("tipo;csv_data\n"); // Header
-            for (Medicamento med : paciente.getListaMedicamentos()) {
-                if (med instanceof Insulina) {
-                    bw.write("Insulina;" + med.toCSV() + "\n");
-                } else {
-                    bw.write("Medicamento;" + med.toCSV() + "\n");
-                }
+        try (Reader reader = new BufferedReader(new FileReader(f))) {
+
+            PacienteData data = gson.fromJson(reader, PacienteData.class);
+            if (data == null) {
+                return;
             }
-        }
-    }
 
-    private void guardarRecordatorios() throws IOException {
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(ARCHIVO_RECORDATORIOS))) {
-            for (Recordatorio rec : paciente.getListaRecordatorios()) {
-                bw.write(rec.toCSV() + "\n");
-            }
-        }
-    }
+            paciente.limpiarDatosCargados();
 
-    private void guardarHistorial() throws IOException {
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(ARCHIVO_HISTORIAL))) {
-            bw.write(paciente.getHistorial().toCSV());
-        }
-    }
+            if (data.medicamentosCSV != null) {
+                for (String linea : data.medicamentosCSV) {
+                    try {
+                        String[] parte = linea.split(";", 2);
+                        if (parte.length < 2) continue;
+                        String tipo = parte[0];
+                        String csvData = parte[1];
 
-    private void cargarMedicamentos() {
-        File f = new File(ARCHIVO_MEDICAMENTOS);
-        if (!f.exists()) return;
-
-        try (BufferedReader br = new BufferedReader(new FileReader(f))) {
-            String linea;
-            br.readLine();
-
-            while ((linea = br.readLine()) != null) {
-                try {
-                    String[] parte = linea.split(";", 2);
-                    if (parte.length < 2) continue;
-
-                    String tipo = parte[0];
-                    String csvData = parte[1];
-
-                    Medicamento med;
-                    if ("Insulina".equals(tipo)) {
-                        med = Insulina.fromCSV(csvData);
-                    } else {
-                        med = Medicamento.fromCSV(csvData);
+                        Medicamento med;
+                        if ("Insulina".equals(tipo)) {
+                            med = Insulina.fromCSV(csvData);
+                        } else {
+                            med = Medicamento.fromCSV(csvData);
+                        }
+                        paciente.cargarMedicamento(med);
+                    } catch (Exception e) {
+                        System.err.println("Error al cargar linea de medicamento: " + linea + " (" + e.getMessage() + ")");
                     }
-                    paciente.cargarMedicamento(med);
-                } catch (Exception e) {
-                    System.err.println("Error al cargar linea de medicamento: " + linea + " (" + e.getMessage() + ")");
                 }
             }
-        } catch (IOException e) {
-            System.err.println("Error al cargar " + ARCHIVO_MEDICAMENTOS + ": " + e.getMessage());
-        }
-    }
 
-    private void cargarRecordatorios() {
-        File f = new File(ARCHIVO_RECORDATORIOS);
-        if (!f.exists()) return;
-
-        try (BufferedReader br = new BufferedReader(new FileReader(f))) {
-            String linea;
-            while ((linea = br.readLine()) != null) {
-                try {
-                    Recordatorio rec = Recordatorio.fromCSV(linea, paciente.getListaMedicamentos());
-                    paciente.cargarRecordatorio(rec);
-                } catch (Exception e) {
-                    System.err.println("Error al cargar linea de recordatorio: " + linea + " (" + e.getMessage() + ")");
+            if (data.recordatoriosCSV != null) {
+                for (String linea : data.recordatoriosCSV) {
+                    try {
+                        Recordatorio rec = Recordatorio.fromCSV(linea, paciente.getListaMedicamentos());
+                        paciente.cargarRecordatorio(rec);
+                    } catch (Exception e) {
+                        System.err.println("Error al cargar linea de recordatorio: " + linea + " (" + e.getMessage() + ")");
+                    }
                 }
             }
-        } catch (IOException e) {
-            System.err.println("Error al cargar " + ARCHIVO_RECORDATORIOS + ": " + e.getMessage());
-        }
-    }
 
-    private void cargarHistorial() {
-        File f = new File(ARCHIVO_HISTORIAL);
-        if (!f.exists()) return;
-
-        try (BufferedReader br = new BufferedReader(new FileReader(f))) {
-            String linea;
-            while ((linea = br.readLine()) != null) {
-                if (linea.trim().isEmpty()) continue;
-                paciente.getHistorial().agregarRegistroDirecto(linea);
+            if (data.historialLineas != null) {
+                for (String linea : data.historialLineas) {
+                    paciente.getHistorial().agregarRegistroDirecto(linea);
+                }
             }
-        } catch (IOException e) {
-            System.err.println("Error al cargar " + ARCHIVO_HISTORIAL + ": " + e.getMessage());
+
+        } catch (IOException | JsonSyntaxException e) {
+            System.err.println("Error al cargar o parsear " + ARCHIVO_JSON + ": " + e.getMessage());
         }
     }
 }

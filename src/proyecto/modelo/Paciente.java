@@ -207,6 +207,12 @@ public class Paciente {
         }
     }
 
+    public void limpiarDatosCargados() {
+        this.listaMedicamentos.clear();
+        this.listaRecordatorios.clear();
+        this.historial.limpiar();
+    }
+
     @Override
     public String toString() {
         return "Paciente{" + "rut='" + rut + "', nombre='" + nombre + "', edad=" + edad + "}";
